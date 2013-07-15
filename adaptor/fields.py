@@ -1,6 +1,5 @@
 from datetime import datetime
 from decimal import Decimal
-from lxml import etree
 
 from django.db.models import Model as djangoModel
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
