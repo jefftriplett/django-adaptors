@@ -1,3 +1,6 @@
+0.2.7
+- Added ability to specify an alternative CSV library.
+
 0.2.6
 
 - Removed a lxml import statement since that library is not mandatory.
