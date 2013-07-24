@@ -231,6 +231,17 @@ This object will create the object in the same order than the csv_models attribu
 	list of csv model, processed in the same order than the list
 
 
+Alternative CSV module
+----------------------
+
+By default django-adaptors uses Python standard CSV library.
+You can specify an alternative CSV library with this Django settings:
+
+    # settings.py
+    ADAPTOR_CSV_MODULE = 'unicodecsv'
+
+
+
 USING XML
 =========
 

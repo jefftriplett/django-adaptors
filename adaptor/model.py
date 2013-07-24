@@ -3,11 +3,13 @@ Define the csv model base classe
 """
 import copy
 
-import csv
+from django.conf import settings
 from django.db.models.base import Model
 from adaptor.fields import Field, IgnoredField, ComposedKeyField, XMLRootField
 from adaptor.exceptions import ForeignKeyFieldError, FieldValueMissing
 
+csv_module_name = getattr(settings, 'ADAPTOR_CSV_MODULE', 'csv')
+csv = __import__(csv_module_name)
 
 class ImproperlyConfigured(Exception):
     """
