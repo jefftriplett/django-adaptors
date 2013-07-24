@@ -1,3 +1,7 @@
+0.2.6
+
+- Removed a lxml import statement since that library is not mandatory.
+
 0.2.3
 
 - add a silent mode for XML, errors are stored in errors
