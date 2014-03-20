@@ -472,8 +472,9 @@ class CsvImporter(object):
             line_number = 1
 
         for line in reader:
-            self.process_line(data, line, lines, line_number, self.csvModel)
-            line_number += 1
+            if line:
+                self.process_line(data, line, lines, line_number, self.csvModel)
+                line_number += 1
         return lines
 
 
