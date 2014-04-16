@@ -5,11 +5,14 @@ import copy
 
 from django.conf import settings
 from django.db.models.base import Model
-from adaptor.fields import Field, IgnoredField, ComposedKeyField, XMLRootField
-from adaptor.exceptions import ForeignKeyFieldError, FieldValueMissing
+
+from .exceptions import ForeignKeyFieldError, FieldValueMissing
+from .fields import Field, IgnoredField, ComposedKeyField, XMLRootField
+
 
 csv_module_name = getattr(settings, 'ADAPTOR_CSV_MODULE', 'csv')
 csv = __import__(csv_module_name)
+
 
 class ImproperlyConfigured(Exception):
     """
@@ -223,7 +226,6 @@ class CsvModel(BaseModel):
         else:
             self.construct_obj_from_model(data)
 
-
     def validate(self):
         if len(self.attrs) == 0:
             raise ImproperlyConfigured("No field defined. Should have at least one field in the model.")
@@ -372,12 +374,12 @@ class LinearLayout(object):
         multiple_index = 0
         for index, (fieldname, field) in enumerate(fields):
             if hasattr(field, "has_multiple") and field.has_multiple:
-               multiple_index = index 
+               multiple_index = index
                multiple_index_fieldname = fieldname
                break
         if multiple_index:
             if not line[multiple_index:]:
-                raise ValueError("No value found for column %s" % multiple_index_fieldname) 
+                raise ValueError("No value found for column %s" % multiple_index_fieldname)
             for index, val in enumerate(line[multiple_index:]):
                 line_ = line[0:multiple_index] + [line[multiple_index + index]]
                 value = model(data=line_, delimiter=delimiter)
@@ -419,7 +421,6 @@ class GroupedCsvModel(CsvModel):
     def has_csv_models(cls):
         return hasattr(cls, "Meta") and hasattr(cls.Meta, "has_header") and cls.Meta.has_header
 
-
     def validate(self):
         if len(self.attrs) != 0:
             raise ImproperlyConfigured("You cannot define fields in \
@@ -442,7 +443,6 @@ class CsvImporter(object):
                 self.layout = self.csvModel.Meta.layout()
             else:
                 self.layout = LinearLayout()
-
 
     def process_extra_fields(self, data, line):
         data_length = len(line)
@@ -477,7 +477,6 @@ class CsvImporter(object):
                 line_number += 1
         return lines
 
-
     def process_line(self, data, line, lines, line_number, model):
         self.process_extra_fields(data, line)
         value = None
@@ -492,7 +491,6 @@ class CsvImporter(object):
         except IndexError, e:
             raise CsvDataException(line_number, error="Number of fields invalid")
         return value
-
 
     def get_class_delimiter(self):
         if not self.delimiter and hasattr(self.csvModel, 'Meta') and hasattr(self.csvModel.Meta, 'delimiter'):
@@ -509,7 +507,6 @@ class CsvImporter(object):
             self.delimiter = dialect.delimiter
         csv_file.seek(0)
         return self.import_data(csv_file)
-
 
     def __getitem__(self, item):
         return self.lines[item]
@@ -529,4 +526,3 @@ class GroupedCsvImporter(CsvImporter):
                                                                               model['model'])
             else:
                 super(GroupedCsvImporter, self).process_line(data, line, lines, line_number, model)
-

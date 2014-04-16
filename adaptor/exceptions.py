@@ -21,5 +21,3 @@ class FieldValueMissing(FieldError):
 
 class ChoiceError(AdaptorError, ValueError):
     pass
-
-
