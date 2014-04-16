@@ -82,7 +82,7 @@ class BaseModel(object):
        return dict((field, getattr(self, field)) for field in self.get_data_fields())
 
     def get_value(self, attr_name, field, value):
-        self.__dict__[attr_name] = field.get_prep_value(value)
+        self.__dict__[attr_name] = field.get_prep_value(value, instance=self)
         self.field_matching_name = field.__dict__.get("match", attr_name)
         return field.get_prep_value(value)
 
